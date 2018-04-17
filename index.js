@@ -13,9 +13,7 @@ const saveJsonObjAsMochafile = (loc, obj) => {
 };
 
 const saveJsonFileAsMochaFile = (newFile, jsonFile) => {
-  console.log(jsonFile);
   return fs.readFile(jsonFile, 'utf8', function (err,data) {
-    console.log(data);
     return saveJsonObjAsMochafile(newFile, JSON.parse(data));
   })
 };
