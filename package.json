@@ -1,0 +1,31 @@
+{
+  "name": "json2mocha",
+  "version": "1.0.0",
+  "description": "Converts JSON files and data into mocha files.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NickDMansfield/Json2Mocha.git"
+  },
+  "keywords": [
+    "json",
+    "mocha",
+    "nodejs",
+    "node",
+    "javascript"
+  ],
+  "author": "Nicholas Mansfield",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NickDMansfield/Json2Mocha/issues"
+  },
+  "homepage": "https://github.com/NickDMansfield/Json2Mocha#readme",
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "mocha": "^5.1.0",
+    "selenium-webdriver": "^3.6.0"
+  }
+}
