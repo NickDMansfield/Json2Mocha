@@ -1,6 +1,8 @@
 
 const fs = require('fs');
 
+let mochaConfig = null;
+
 const getFindElementStringViaTargetObj = targetObj => {
   return "driver.findElement(webdriver.By." + targetObj.searchBy + "(" + targetObj.value + "))";
 };
@@ -26,33 +28,49 @@ const addActionText = (actionObj) => {
   return editedString;
 };
 
-const getStringForActionsArray = (actionsArr, indents = 0) => {
+const getStringsForActionsArray = (actionsArr, indents = 0) => {
   let retStr = "";
   for (let action of actionsArr) {
+    if (mochaConfig != null && mochaConfig.hasOwnProperty('autoDelay')) {
+      // If an auto delay is enabled, will put a lag between each action
+      retStr += " ".repeat(indents) + addActionText({ action: { method: 'sleep', values: [mochaConfig.autoDelay] }}) + ";\r\n";
+    }
     retStr += " ".repeat(indents) + addActionText(action) + ";\r\n";
   }
   return retStr;
 };
 
-const convertJsonObjToMochaString = obj => {
+const convertJsonObjToMochaString = (obj) => {
   let mochaString = "";
+  mochaConfig = obj.config;
+
   for (let describesCount = 0; describesCount < obj.describes.length; ++describesCount) {
     const currentDescribe = obj.describes[describesCount];
     // Set up initial describe
     mochaString = mochaString.concat("test.describe('" + currentDescribe.description + "', function () {\r\n");
+
 
     for (let itsCount = 0; itsCount < currentDescribe.its.length; ++itsCount) {
       let indent ="  ";
       const currentIt = currentDescribe.its[itsCount];
       // Begin it statement
       mochaString = mochaString.concat(indent + "test.it('" + currentIt.should + "', function() {\r\n");
-      mochaString += indent + getStringForActionsArray(currentIt.actions, 4);
+
+
+        // If there are any shared describe actions, apply them
+        if (obj.sharedItActions && obj.sharedItActions.length > 0) {
+          mochaString += getStringsForActionsArray(obj.sharedItActions, 4);
+        }
+
+      // Gets all actions
+      mochaString += getStringsForActionsArray(currentIt.actions, 4);
+
       //Close out it statement
       mochaString += indent + "});\r\n"
     }
 
     // Close out describe section
-    mochaString = mochaString.concat("});");
+    mochaString = mochaString.concat("});\r\n\r\n");
   }
   return mochaString;
 };

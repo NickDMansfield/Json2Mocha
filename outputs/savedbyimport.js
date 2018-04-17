@@ -10,10 +10,11 @@ var driver = new webdriver.Builder().
    build();
 
    
-test.describe('This should be in a method', function () {
+test.describe('Searches google - loaded from an obj', function () {
   test.it('search google', function() {
-      driver.get('http://google.com');
+    driver.get('http://google.com');
     driver.findElement(webdriver.By.name('q')).sendKeys('Json2Mocha npm');
     driver.findElement(webdriver.By.name('q')).submit();
   });
 });
+

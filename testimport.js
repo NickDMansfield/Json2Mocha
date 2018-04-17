@@ -3,10 +3,11 @@ const j2m = require("./index.js");
 
 const sampleObj = {
   description: "sample obj desc",
+  config: {},
   actions: [],
   describes: [
     {
-      description: "This should be in a method",
+      description: "Searches google - loaded from an obj",
       actions: [],
       its: [
         {
