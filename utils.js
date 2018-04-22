@@ -1,9 +1,13 @@
 
 const fs = require('fs');
+const path = require("path");
 
 let mochaConfig = null;
 
 const getFindElementStringViaTargetObj = targetObj => {
+  if (targetObj.searchBy == "cssSelector") {
+    return "driver.findElement(" + targetObj.searchBy + "(" + targetObj.value + "))";
+  }
   return "driver.findElement(webdriver.By." + targetObj.searchBy + "(" + targetObj.value + "))";
 };
 
@@ -102,7 +106,7 @@ const feName = function(str) {
 
 const getBaseTemplateText = callback => {
 
-  return fs.readFile('./mochaTemplate.js', 'utf8', function (err,data) {
+  return fs.readFile(path.join(__dirname, 'mochaTemplate.js'), 'utf8', function (err,data) {
     if (err) {
       return console.log(err);
     }
