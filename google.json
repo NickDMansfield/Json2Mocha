@@ -57,6 +57,8 @@
           "should": "Look up cat pictures",
           "actions": [
             {
+              "comment": "This here is a comment. But look at how long it has now become?  If it gets any longer, we will have to wrap it.  The default value is 80, but it can be set via the adjacent 'charsPerLine' property.",
+              "charsPerLine":40,
               "target": {
                 "searchBy":"name",
                 "value": "'q'"

@@ -4,6 +4,21 @@ const path = require("path");
 
 let mochaConfig = null;
 
+const getFormattedCommentString = (_obj, _charsPerLine) => {
+  if (_obj === undefined)
+    return "";
+  const obj = JSON.parse(JSON.stringify(_obj));
+  let commentString = obj.comment ? JSON.parse(JSON.stringify(obj)).comment : "";
+  const charsPerLine = _charsPerLine || obj.charsPerLine || 80;
+  let outputString = "";
+  while (commentString.length > 0) {
+    outputString += "//" + commentString.slice(0, charsPerLine) + "\r\n";
+    commentString = commentString.slice(charsPerLine);
+  }
+  console.log("return:" + outputString);
+  return outputString;
+};
+
 const getFindElementStringViaTargetObj = targetObj => {
   if (targetObj.searchBy == "cssSelector") {
     return "driver.findElement(" + targetObj.searchBy + "(" + targetObj.value + "))";
@@ -25,7 +40,7 @@ const getActionStringFromActionObj = actionObj => {
 
 const addActionText = (actionObj) => {
   // expects an object with a target and an action property
-  let editedString = "";
+  let editedString = getFormattedCommentString(actionObj);
   const actionTargetString = actionObj.target ? getFindElementStringViaTargetObj(actionObj.target) : "driver";
   const actionActionString = getActionStringFromActionObj(actionObj.action);
   editedString += actionTargetString +"." + actionActionString;
