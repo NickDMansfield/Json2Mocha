@@ -4,15 +4,15 @@ const path = require("path");
 
 let mochaConfig = null;
 
-const getFormattedCommentString = (_obj, _charsPerLine) => {
+const getFormattedCommentString = (_obj, indents = 0, _charsPerLine = 80) => {
   if (_obj === undefined)
-    return "";
+    return " ".repeat(indents);
   const obj = JSON.parse(JSON.stringify(_obj));
   let commentString = obj.comment ? JSON.parse(JSON.stringify(obj)).comment : "";
-  const charsPerLine = _charsPerLine || obj.charsPerLine || 80;
-  let outputString = "";
+  const charsPerLine = obj.charsPerLine || _charsPerLine;
+  let outputString =  " ".repeat(indents);
   while (commentString.length > 0) {
-    outputString += "//" + commentString.slice(0, charsPerLine) + "\r\n";
+    outputString += "//" + commentString.slice(0, charsPerLine) + "\r\n" + " ".repeat(indents);
     commentString = commentString.slice(charsPerLine);
   }
   console.log("return:" + outputString);
@@ -38,9 +38,9 @@ const getActionStringFromActionObj = actionObj => {
   return returnString;
 };
 
-const addActionText = (actionObj) => {
+const addActionText = (actionObj, indents = 0) => {
   // expects an object with a target and an action property
-  let editedString = getFormattedCommentString(actionObj);
+  let editedString =  getFormattedCommentString(actionObj, indents);
   const actionTargetString = actionObj.target ? getFindElementStringViaTargetObj(actionObj.target) : "driver";
   const actionActionString = getActionStringFromActionObj(actionObj.action);
   editedString += actionTargetString +"." + actionActionString;
@@ -52,9 +52,9 @@ const getStringsForActionsArray = (actionsArr, indents = 0) => {
   for (let action of actionsArr) {
     if (mochaConfig != null && mochaConfig.hasOwnProperty('autoDelay')) {
       // If an auto delay is enabled, will put a lag between each action
-      retStr += " ".repeat(indents) + addActionText({ action: { method: 'sleep', values: [mochaConfig.autoDelay] }}) + ";\r\n";
+      retStr += addActionText({ action: { method: 'sleep', values: [mochaConfig.autoDelay] }}, indents) + ";\r\n";
     }
-    retStr += " ".repeat(indents) + addActionText(action) + ";\r\n";
+    retStr += addActionText(action, indents) + ";\r\n";
   }
   return retStr;
 };
