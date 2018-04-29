@@ -29,12 +29,17 @@ test.describe('Looks up cat pictures', function () {
     driver.sleep(750);
     driver.get('http://google.com');
     driver.sleep(750);
-    //This here is a comment. But look at how 
-    //long it has now become?  If it gets any 
-    //longer, we will have to wrap it.  The de
-    //fault value is 80, but it can be set via
-    // the adjacent 'charsPerLine' property in
-    // the source JSON file.
+    // This here is a comment. But look at how long it has 
+    // now become?  If it gets any longer, we will have to 
+    // wrap it.  The default value is 80, but it can be set 
+    // via the adjacent 'charsPerLine' property in 
+    // the source JSON file.     
+    driver.wait(until.elementLocated(webdriver.By.name('q')), 10000).then(element => { 
+     return element.sendKeys('We\'re gonna wait for five seconds now') 
+    }) ;
+    driver.sleep(750);
+    driver.sleep(5000);
+    driver.sleep(750);
     driver.wait(until.elementLocated(webdriver.By.name('q')), 10000).then(element => { 
      return element.clear() 
     }) ;

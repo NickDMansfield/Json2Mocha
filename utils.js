@@ -7,19 +7,30 @@ let mochaConfig = null;
 const getFormattedCommentString = (_obj, indents = 0, _charsPerLine = 80) => {
   if (_obj === undefined)
     return " ".repeat(indents);
+  if (!_obj.comment)
+    return "";
   const obj = JSON.parse(JSON.stringify(_obj));
   let commentString = obj.comment ? JSON.parse(JSON.stringify(obj)).comment : "";
   const charsPerLine = obj.charsPerLine || _charsPerLine;
   let outputString =  " ".repeat(indents);
-  while (commentString.length > 0) {
-    outputString += "//" + commentString.slice(0, charsPerLine) + "\r\n" + " ".repeat(indents);
-    commentString = commentString.slice(charsPerLine);
+  const commentArr = commentString.split(" ");
+  if (commentArr.length > 0) {
+    outputString += "// ";
   }
-  return outputString;
+  let charCount = 0;
+  for (let word of commentArr) {
+    if ((charCount + word.length ) > charsPerLine) {
+      outputString += "\r\n" + " ".repeat(indents) + "// ";
+      charCount = 0;
+    }
+    charCount += word.length;
+    outputString += word + " ";
+  }
+  return outputString + " ".repeat(indents) + "\r\n";
 };
 
 const getFindElementStringViaTargetObj = (targetObj, indents = 0) => {
-  return "driver.wait(until.elementLocated(webdriver.By." + targetObj.searchBy + "(" + targetObj.value + ")), 10000).then(element => { \r\n" + " ".repeat(indents) + "return element.ACTIONSTRINGPLACEHOLDER \r\n" + " ".repeat(indents-1) + "}) ";
+  return " ".repeat(indents - 1) + "driver.wait(until.elementLocated(webdriver.By." + targetObj.searchBy + "(" + targetObj.value + ")), 10000).then(element => { \r\n" + " ".repeat(indents) + "return element.ACTIONSTRINGPLACEHOLDER \r\n" + " ".repeat(indents - 1) + "}) ";
 };
 
 const getActionStringFromActionObj = actionObj => {
@@ -37,7 +48,7 @@ const getActionStringFromActionObj = actionObj => {
 const addActionText = (actionObj, indents = 0) => {
   // expects an object with a target and an action property
   let editedString =  getFormattedCommentString(actionObj, indents);
-  const actionTargetString = actionObj.target ? getFindElementStringViaTargetObj(actionObj.target, indents + 1) : "driver";
+  const actionTargetString = actionObj.target ? getFindElementStringViaTargetObj(actionObj.target, indents + 1) : " ".repeat(indents) + "driver";
   const actionActionString = getActionStringFromActionObj(actionObj.action);
   editedString += actionObj.target ? actionTargetString.replace("ACTIONSTRINGPLACEHOLDER", actionActionString) : actionTargetString + "." + actionActionString;
   return editedString;

@@ -64,6 +64,22 @@
                 "value": "'q'"
               },
               "action": {
+                "method": "sendKeys",
+                "values": ["'We\\'re gonna wait for five seconds now'"]
+              }
+            },
+            {
+              "action": {
+                "method": "sleep",
+                "values": ["5000"]
+              }
+            },
+            {
+              "target": {
+                "searchBy":"name",
+                "value": "'q'"
+              },
+              "action": {
                 "method": "clear",
                 "values": []
               }
