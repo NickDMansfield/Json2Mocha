@@ -1,7 +1,7 @@
 {
   "description": "sample obj desc",
   "config": {
-    "autoDelay": 750
+    "autoDelay": 1000
   },
   "actions": [],
   "sharedItActions": [
@@ -17,10 +17,12 @@
   ],
   "describes": [
     {
+      "comment": "Comments can go on describes",
       "description": "Searches google - loaded from a json file",
       "actions": [],
       "its": [
         {
+          "comment": "Or you can put comments on it/should objects",
           "should": "search google",
           "actions": [
             {
@@ -71,7 +73,7 @@
             {
               "action": {
                 "method": "sleep",
-                "values": ["5000"]
+                "values": ["3000"]
               }
             },
             {
