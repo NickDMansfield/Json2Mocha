@@ -14,9 +14,13 @@ test.describe('Searches google - loaded from a json file', function () {
     driver.sleep(750);
     driver.get('http://google.com');
     driver.sleep(750);
-    driver.findElement(webdriver.By.name('q')).sendKeys('npm json2mocha');
+    driver.wait(until.elementLocated(webdriver.By.name('q')), 10000).then(element => { 
+     return element.sendKeys('npm json2mocha') 
+    }) ;
     driver.sleep(750);
-    driver.findElement(webdriver.By.name('q')).submit();
+    driver.wait(until.elementLocated(webdriver.By.name('q')), 10000).then(element => { 
+     return element.submit() 
+    }) ;
   });
 });
 
@@ -29,14 +33,23 @@ test.describe('Looks up cat pictures', function () {
     //long it has now become?  If it gets any 
     //longer, we will have to wrap it.  The de
     //fault value is 80, but it can be set via
-    // the adjacent 'charsPerLine' property.
-    driver.findElement(webdriver.By.name('q')).clear();
+    // the adjacent 'charsPerLine' property in
+    // the source JSON file.
+    driver.wait(until.elementLocated(webdriver.By.name('q')), 10000).then(element => { 
+     return element.clear() 
+    }) ;
     driver.sleep(750);
-    driver.findElement(webdriver.By.name('q')).sendKeys('purrito');
+    driver.wait(until.elementLocated(webdriver.By.name('q')), 10000).then(element => { 
+     return element.sendKeys('purrito') 
+    }) ;
     driver.sleep(750);
-    driver.findElement(webdriver.By.name('q')).submit();
+    driver.wait(until.elementLocated(webdriver.By.name('q')), 10000).then(element => { 
+     return element.submit() 
+    }) ;
     driver.sleep(750);
-    driver.findElement(webdriver.By.className('q qs')).click();
+    driver.wait(until.elementLocated(webdriver.By.className('q qs')), 10000).then(element => { 
+     return element.click() 
+    }) ;
   });
 });
 

@@ -15,15 +15,11 @@ const getFormattedCommentString = (_obj, indents = 0, _charsPerLine = 80) => {
     outputString += "//" + commentString.slice(0, charsPerLine) + "\r\n" + " ".repeat(indents);
     commentString = commentString.slice(charsPerLine);
   }
-  console.log("return:" + outputString);
   return outputString;
 };
 
-const getFindElementStringViaTargetObj = targetObj => {
-  if (targetObj.searchBy == "cssSelector") {
-    return "driver.findElement(" + targetObj.searchBy + "(" + targetObj.value + "))";
-  }
-  return "driver.findElement(webdriver.By." + targetObj.searchBy + "(" + targetObj.value + "))";
+const getFindElementStringViaTargetObj = (targetObj, indents = 0) => {
+  return "driver.wait(until.elementLocated(webdriver.By." + targetObj.searchBy + "(" + targetObj.value + ")), 10000).then(element => { \r\n" + " ".repeat(indents) + "return element.ACTIONSTRINGPLACEHOLDER \r\n" + " ".repeat(indents-1) + "}) ";
 };
 
 const getActionStringFromActionObj = actionObj => {
@@ -41,9 +37,9 @@ const getActionStringFromActionObj = actionObj => {
 const addActionText = (actionObj, indents = 0) => {
   // expects an object with a target and an action property
   let editedString =  getFormattedCommentString(actionObj, indents);
-  const actionTargetString = actionObj.target ? getFindElementStringViaTargetObj(actionObj.target) : "driver";
+  const actionTargetString = actionObj.target ? getFindElementStringViaTargetObj(actionObj.target, indents + 1) : "driver";
   const actionActionString = getActionStringFromActionObj(actionObj.action);
-  editedString += actionTargetString +"." + actionActionString;
+  editedString += actionObj.target ? actionTargetString.replace("ACTIONSTRINGPLACEHOLDER", actionActionString) : actionTargetString + "." + actionActionString;
   return editedString;
 };
 
@@ -92,31 +88,6 @@ const convertJsonObjToMochaString = (obj) => {
     mochaString = mochaString.concat("});\r\n\r\n");
   }
   return mochaString;
-};
-
-const feID = function(str) {
-  try {
-    return fe(webdriver.By.id, str);
-  }catch(ex) {
-    return null;
-  }
-};
-const fe = function(type, str) {
-  return driver.findElement(type(str));
-}
-const feCN = function(str) {
-  try {
-    return fe(webdriver.By.className, str);
-  }catch(err) {
-    return null;
-  }
-};
-const feName = function(str) {
-  try {
-    return fe(webdriver.By.name, str);
-  }catch(err) {
-    return null;
-  }
 };
 
 const getBaseTemplateText = callback => {
