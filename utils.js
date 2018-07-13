@@ -74,14 +74,14 @@ const convertJsonObjToMochaString = (obj) => {
     const currentDescribe = obj.describes[describesCount];
 
     // Set up initial describe
-    mochaString = getFormattedCommentString(currentDescribe) + mochaString.concat("test.describe('" + currentDescribe.description + "', function () {\r\n");
+    mochaString = getFormattedCommentString(currentDescribe) + mochaString.concat("describe('" + currentDescribe.description + "', function () {\r\n");
 
 
     for (let itsCount = 0; itsCount < currentDescribe.its.length; ++itsCount) {
       let indent ="  ";
       const currentIt = currentDescribe.its[itsCount];
       // Begin it statement
-      mochaString = mochaString.concat(indent + getFormattedCommentString(currentIt) + "  test.it('" + currentIt.should + "', function() {\r\n");
+      mochaString = mochaString.concat(indent + getFormattedCommentString(currentIt) + "  it('" + currentIt.should + "', function() {\r\n");
 
 
         // If there are any shared describe actions, apply them

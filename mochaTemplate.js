@@ -1,7 +1,6 @@
 require('chromedriver');
 var webdriver = require('selenium-webdriver');
 const assert = require('assert');
-const test = require('selenium-webdriver/testing');
 const until = webdriver.until;
 
 

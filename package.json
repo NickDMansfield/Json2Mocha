@@ -1,6 +1,6 @@
 {
   "name": "json2mocha",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "Converts JSON files and data into mocha files.",
   "main": "index.js",
   "scripts": {
